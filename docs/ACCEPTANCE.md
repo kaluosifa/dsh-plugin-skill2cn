@@ -443,11 +443,13 @@ repository, out of scope for this task).
    workspace (`session.header.cwd`, with a `ctx.sessions.list()` fallback), and the
    DSH project skills no longer appear on the panel. **The plan's R6 limitation is
    retired as a result.**
-5. **An acceptance fixture was left inside the DSH checkout** at
-   `deepseek-harness/.dsh/skills/demo-ws/SKILL.md` (untracked, not created by this
-   session — left over from an earlier one). It is the only writable fixture for the
-   workspace group; **cleaning it up is recommended** (deleting that directory returns
-   the DSH workspace group to the checkout's own project skills).
+5. ~~**An acceptance fixture was left inside the DSH checkout**~~ **Removed.** The DSH
+   checkout carried an untracked `<dsh-checkout>/.dsh/skills/demo-ws/SKILL.md`, left
+   over from an earlier session — the only writable fixture for the workspace group.
+   That `.dsh/` tree has since been deleted, which returns the DSH workspace group to
+   the checkout's own project skills with no tracked change. (This is a different file
+   from the `.dsh/skills/demo-ws/SKILL.md` **test fixture shipped in this repository**,
+   which is still here and is documented in the README.)
 
 ## Reproduction commands
 
