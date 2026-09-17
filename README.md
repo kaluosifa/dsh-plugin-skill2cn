@@ -52,7 +52,8 @@ pnpm typecheck    # both tsconfigs: host + client
 pnpm build        # emits lib/index.js (host ESM) + lib/client.js (closure-factory CJS)
 ```
 
-Requirements: **Node ≥ 20** and **pnpm**.
+Requirements: **Node ≥ 22.13** and **pnpm 11**. (pnpm 11 requires Node ≥ 22.13 and is
+also the version that produced `pnpm-lock.yaml`.)
 
 ### Build pipeline
 

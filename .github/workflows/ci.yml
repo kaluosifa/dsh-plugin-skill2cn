@@ -16,12 +16,12 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        node: [20, 22]
+        node: [22, 24]
         include:
           # The plugin touches Windows path classification (drive letters, `\`
-          # separators), so keep an extra Windows leg on the LTS line.
+          # separators), so keep an extra Windows leg on the older LTS line.
           - os: windows-latest
-            node: 20
+            node: 22
 
     steps:
       - uses: actions/checkout@v4
@@ -31,6 +31,8 @@ jobs:
           # Must stay in step with the pnpm that wrote pnpm-lock.yaml
           # (lockfileVersion 9.0) and with the `allowBuilds` key used by
           # pnpm-workspace.yaml to approve esbuild's build script.
+          # Note: pnpm 11 declares `engines.node: >=22.13`, so it cannot run on
+          # a Node 20 leg — which is why the matrix above starts at 22.
           version: 11
 
       - uses: actions/setup-node@v4

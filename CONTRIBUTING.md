@@ -24,8 +24,8 @@ In practice this means:
 
 | Tool | Version |
 |---|---|
-| Node | ≥ 20 (CI runs 20 and 22) |
-| pnpm | ≥ 9 |
+| Node | ≥ 22.13 (CI runs 22 and 24) |
+| pnpm | ≥ 11 |
 
 The dependency `@deepseek-ai/*` is published on the public npm registry, so no
 special registry configuration is needed. If your environment is behind a mirror,
@@ -139,8 +139,8 @@ such reports are treated as high priority.
 
 | 工具 | 版本 |
 |---|---|
-| Node | ≥ 20（CI 跑 20 与 22） |
-| pnpm | ≥ 9 |
+| Node | ≥ 22.13（CI 跑 22 与 24） |
+| pnpm | ≥ 11 |
 
 依赖 `@deepseek-ai/*` 已发布在公共 npm，无需特殊 registry 配置。若你处于镜像环境，请确认镜像收录了 `@deepseek-ai/*@0.1.2-alpha.3` 与 `@deepseek-ai/cordis@4.0.2`。
 
