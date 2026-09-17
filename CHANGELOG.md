@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Removed
+
+- The `demo-ws` skill fixture (`.dsh/skills/demo-ws/SKILL.md`). It existed only so the
+  "workspace" source group's scan/classify path could be exercised by hand against a
+  running DSH; the unit tests use their own inline synthetic paths and never read it.
+  The published tree now carries no demo skills.
+
 ## [0.1.0] — 2026-09-18
 
 First open-source release. This version is the initial public snapshot of the

@@ -447,9 +447,9 @@ repository, out of scope for this task).
    checkout carried an untracked `<dsh-checkout>/.dsh/skills/demo-ws/SKILL.md`, left
    over from an earlier session — the only writable fixture for the workspace group.
    That `.dsh/` tree has since been deleted, which returns the DSH workspace group to
-   the checkout's own project skills with no tracked change. (This is a different file
-   from the `.dsh/skills/demo-ws/SKILL.md` **test fixture shipped in this repository**,
-   which is still here and is documented in the README.)
+   the checkout's own project skills with no tracked change. The same-named demo skill
+   that used to ship here as a fixture has since been dropped from this repository too,
+   so the published tree carries no demo skills at all.
 
 ## Reproduction commands
 

@@ -99,10 +99,6 @@ SPEC §7 九条的逐条实测记录见 [`docs/ACCEPTANCE.md`](docs/ACCEPTANCE.m
 - [`docs/ACCEPTANCE.md`](docs/ACCEPTANCE.md) — 实施验收记录
 - [`docs/README.md`](docs/README.md) — 文档导览
 
-## 测试夹具
-
-`.dsh/skills/demo-ws/SKILL.md` 是一个**测试夹具**，不是一个真实可用的 skill —— 它只用来验证「工作区」来源分组的扫描与分类路径能被正确识别。DSH 从本仓库目录启动时才会发现它。
-
 ## License
 
 [MIT](LICENSE)

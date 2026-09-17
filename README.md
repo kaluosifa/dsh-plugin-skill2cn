@@ -93,8 +93,6 @@ Translation is **write-to-disk** (ADR-0001): the plugin reads the target `SKILL.
 pnpm test        # 12 spec files, 94 test cases
 ```
 
-`.dsh/skills/demo-ws/SKILL.md` is a **test fixture**, not a usable skill — it exists so the "workspace" source group's scan/classify path can be exercised. DSH only discovers it when started from this repository's directory.
-
 ## Acceptance
 
 The itemized, measured results for all nine SPEC §7 acceptance criteria are in [`docs/ACCEPTANCE.md`](docs/ACCEPTANCE.md) (including the DSH API mismatches found during implementation and the defects they exposed).
