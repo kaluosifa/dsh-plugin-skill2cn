@@ -1,0 +1,5 @@
+- insert:
+    - id: skill2cn
+      name: dsh-plugin-skill2cn
+      config:
+        dataDir: !!js dshHomePath('skill2cn')

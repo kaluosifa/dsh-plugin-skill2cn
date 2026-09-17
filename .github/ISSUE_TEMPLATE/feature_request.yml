@@ -1,0 +1,72 @@
+name: Feature request
+description: Suggest an idea or an improvement
+title: "[Feature] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Before opening a request, please skim the **Known limitations** section of the
+        [README](https://github.com/kaluosifa/dsh-plugin-skill2cn/blob/main/README.md)
+        and the **Non-goals** section of
+        [docs/SPEC.md](https://github.com/kaluosifa/dsh-plugin-skill2cn/blob/main/docs/SPEC.md)
+        — the request may already be a deliberate design decision. If it contradicts
+        the SPEC, say so explicitly; that is useful information rather than a problem.
+
+  - type: textarea
+    id: scenario
+    attributes:
+      label: The scenario
+      description: |
+        What are you actually trying to do? Describe the situation and the friction
+        you hit, rather than jumping straight to a proposed implementation.
+    validations:
+      required: true
+
+  - type: textarea
+    id: desired
+    attributes:
+      label: What you would like to happen
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives you have considered
+      description: Including any workaround you are using today.
+    validations:
+      required: false
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Translation routing / model settings
+        - Management panel (tabs, list, filter)
+        - New-skill prompt card
+        - Text, wording or localization
+        - Build / packaging / CI
+        - Documentation
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Anything else
+      description: Screenshots, mockups, links to prior art in DSH or other plugins.
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: preflight
+    attributes:
+      label: Preflight
+      options:
+        - label: I searched existing issues and this is not a duplicate.
+          required: true
+        - label: I understand this repository is a published snapshot, so a change may be re-applied onto the private development tree rather than merged here directly.
+          required: true

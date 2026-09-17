@@ -1,0 +1,25 @@
+# dependencies
+node_modules/
+
+# build output
+lib/
+lib-tsc/
+
+# test / coverage
+coverage/
+*.tsbuildinfo
+
+# logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# editors & OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# local scratch
+.accept/
+.zcode/

@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: node ${{ matrix.node }} / ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        node: [20, 22]
+        include:
+          # The plugin touches Windows path classification (drive letters, `\`
+          # separators), so keep an extra Windows leg on the LTS line.
+          - os: windows-latest
+            node: 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          # Must stay in step with the pnpm that wrote pnpm-lock.yaml
+          # (lockfileVersion 9.0) and with the `allowBuilds` key used by
+          # pnpm-workspace.yaml to approve esbuild's build script.
+          version: 11
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Test
+        run: pnpm test
+
+      - name: Build
+        run: pnpm build
+
+      - name: Verify build output exists
+        shell: bash
+        run: |
+          test -f lib/index.js || { echo "missing lib/index.js (host half)"; exit 1; }
+          test -f lib/client.js || { echo "missing lib/client.js (client half)"; exit 1; }

@@ -1,0 +1,129 @@
+name: Bug report
+description: Report something that does not work as expected
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the report. Most breakage so far has come from DSH API drift
+        rather than from plugin logic, so the two most useful fields below are your
+        **DSH version** and your **plugin version** — please fill both in.
+
+        Do not report security issues here; see the Security section of
+        [CONTRIBUTING.md](https://github.com/kaluosifa/dsh-plugin-skill2cn/blob/main/CONTRIBUTING.md).
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: A clear description of the actual behaviour.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected instead
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Be as specific as you can; a minimal reproduction helps enormously.
+      placeholder: |
+        1. ...
+        2. ...
+        3. ...
+    validations:
+      required: true
+
+  - type: input
+    id: dsh-version
+    attributes:
+      label: DSH version
+      description: Output of `dsh --version`, or the `@deepseek-ai/*` version you are running.
+      placeholder: "0.1.2-alpha.3"
+    validations:
+      required: true
+
+  - type: input
+    id: plugin-version
+    attributes:
+      label: Plugin version
+      placeholder: "0.1.0"
+    validations:
+      required: true
+
+  - type: input
+    id: node-pnpm
+    attributes:
+      label: Node and pnpm versions
+      description: Output of `node -v` and `pnpm -v`.
+      placeholder: "node v22.11.0 / pnpm 11.21.0"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating system
+      options:
+        - Windows
+        - macOS
+        - Linux
+        - Other (describe in the report)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: skill-source
+    attributes:
+      label: Skill source involved
+      description: Which source group the affected skill belonged to (if relevant).
+      options:
+        - Not relevant
+        - Workspace (project .dsh/skills or .agents/skills)
+        - Global (~/.dsh/skills or ~/.agents/skills)
+        - Plugin package (skills inside an npm package in the profile)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: route
+    attributes:
+      label: Translation route in use
+      options:
+        - Not relevant
+        - Follow the current DSH session route
+        - Configured provider/model
+        - Custom endpoint (OpenAI-compatible)
+        - Custom endpoint (Anthropic-compatible)
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs, errors or screenshots
+      description: |
+        Paste any relevant output. If a translation failed, the error surfaced on
+        the card (e.g. `skill2cn/llm-http — HTTP 503`) is the most valuable thing
+        you can include. **Redact API keys and tokens before pasting.**
+      render: shell
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: preflight
+    attributes:
+      label: Preflight
+      options:
+        - label: I searched existing issues and this is not a duplicate.
+          required: true
+        - label: I have redacted any API keys, tokens or private descriptions from this report.
+          required: true
+        - label: I did **not** run `Translate All` against skills I could not afford to have rewritten (or I have a backup of them).
+          required: false
