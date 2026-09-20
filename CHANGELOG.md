@@ -9,10 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- README media (`docs/assets/`): the usage poster (rendered `poster.png`, with its
-  `poster.html` source kept for re-rendering) embedded near the top of both
-  READMEs, and the introduction video (`introduction-video.mp4`) in a new
-  "Demo video" / 「演示视频」 section. Video and poster by teammate 阿根 (Agen).
+- README media (`docs/assets/`): the usage poster embedded near the top of both
+  READMEs (English `poster.en.png` in `README.md`, Chinese `poster.png` in
+  `README.zh-CN.md`; the `poster.en.html` / `poster.html` sources are kept for
+  re-rendering), and the introduction video in a new "Demo video" / 「演示视频」
+  section, embedded as an inline player hosted on GitHub's user-attachments CDN
+  (GitHub strips `<video>` embeds that point at repository files); the mp4 itself
+  is kept at `docs/assets/introduction-video.mp4`. Video and poster by teammate
+  阿根 (Agen).
 
 ### Removed
 

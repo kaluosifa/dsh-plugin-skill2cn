@@ -15,9 +15,9 @@
 
 ## 演示视频
 
-<video src="https://github.com/kaluosifa/dsh-plugin-skill2cn/raw/main/docs/assets/introduction-video.mp4" controls muted playsinline width="720"></video>
+https://github.com/user-attachments/assets/a98d7649-052b-4912-8ff5-1a472abf2dda
 
-播放器未加载时可[直接查看视频文件](docs/assets/introduction-video.mp4)。介绍视频与上方使用说明海报（[源文件 HTML](docs/assets/poster.html)）由队友阿根制作。
+介绍视频与上方使用说明海报（[源文件 HTML](docs/assets/poster.html)）由队友阿根制作；视频文件同时保留在仓库 [`docs/assets/introduction-video.mp4`](docs/assets/introduction-video.mp4) 中。
 
 ## 安装
 

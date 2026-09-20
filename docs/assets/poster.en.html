@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Skill2CN Skill Localization · Usage Poster</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: #eef3fa;
+    display: flex; justify-content: center; padding: 24px;
+  }
+  .poster {
+    width: 760px;
+    background: linear-gradient(160deg, #f8fbff 0%, #eef4fd 55%, #e9f3ff 100%);
+    border-radius: 28px;
+    overflow: hidden;
+    box-shadow: 0 24px 60px rgba(30, 90, 180, 0.16);
+    position: relative;
+  }
+  /* ── decorative background ── */
+  .deco-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(56,132,255,.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(56,132,255,.06) 1px, transparent 1px);
+    background-size: 36px 36px;
+    mask-image: radial-gradient(ellipse at 30% 0%, #000 0%, transparent 70%);
+  }
+  .orb { position: absolute; border-radius: 50%; filter: blur(2px); }
+  .orb1 { width: 220px; height: 220px; right: -70px; top: -70px;
+    background: radial-gradient(circle at 35% 35%, #7ee0ff33, #4f8cff22 60%, transparent 75%); }
+  .orb2 { width: 160px; height: 160px; left: -50px; top: 200px;
+    background: radial-gradient(circle at 40% 40%, #b39dff2e, transparent 70%); }
+  .orb3 { width: 260px; height: 260px; right: -80px; bottom: 120px;
+    background: radial-gradient(circle at 40% 40%, #6ff0d629, transparent 70%); }
+
+  .content { position: relative; padding: 44px 48px 40px; }
+
+  /* ── header ── */
+  .badge-row { display: flex; gap: 10px; margin-bottom: 18px; }
+  .badge {
+    font-size: 12px; font-weight: 600; letter-spacing: .5px;
+    padding: 5px 14px; border-radius: 999px;
+  }
+  .b1 { background: #e3edff; color: #2563eb; border: 1px solid #bcd4ff; }
+  .b2 { background: #e8fbf4; color: #0d9463; border: 1px solid #bfeeda; }
+  .b3 { background: #f3ecff; color: #7c3aed; border: 1px solid #e2d4ff; }
+
+  h1 { font-size: 36px; font-weight: 800; color: #10233f; letter-spacing: .5px; line-height: 1.15; }
+  h1 .en {
+    background: linear-gradient(90deg, #2f7bff, #7c5cff);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .tagline {
+    margin-top: 12px; font-size: 16px; color: #47607f; font-weight: 500;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .tagline .arrow { color: #2f7bff; font-weight: 700; }
+
+  /* ── feature cards ── */
+  .section-title {
+    margin: 34px 0 14px; font-size: 14px; font-weight: 700; color: #7d94ad;
+    letter-spacing: 3px; display: flex; align-items: center; gap: 10px;
+  }
+  .section-title::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, #c8dcf5, transparent); }
+
+  .features { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .feature {
+    background: rgba(255,255,255,.82);
+    border: 1px solid #dde9f8; border-radius: 16px; padding: 16px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
+    backdrop-filter: blur(4px);
+    box-shadow: 0 4px 14px rgba(40, 100, 190, .06);
+  }
+  .f-icon {
+    width: 42px; height: 42px; border-radius: 12px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center; font-size: 21px;
+  }
+  .fi-1 { background: linear-gradient(135deg, #e2efff, #d0e2ff); }
+  .fi-2 { background: linear-gradient(135deg, #e5fbee, #d3f6e3); }
+  .fi-3 { background: linear-gradient(135deg, #f0e9ff, #e5d9ff); }
+  .fi-4 { background: linear-gradient(135deg, #fff2e0, #ffe4c2); }
+  .feature h3 { font-size: 15.5px; font-weight: 700; color: #16294a; margin-bottom: 3px; }
+  .feature p { font-size: 12.5px; color: #5c7590; line-height: 1.55; }
+
+  /* ── three steps ── */
+  .steps { display: flex; gap: 12px; }
+  .step {
+    flex: 1; background: rgba(255,255,255,.82); border: 1px solid #dde9f8;
+    border-radius: 16px; padding: 16px 15px 14px; position: relative;
+    box-shadow: 0 4px 14px rgba(40, 100, 190, .06);
+  }
+  .step-num {
+    position: absolute; top: -12px; left: 15px;
+    width: 26px; height: 26px; border-radius: 8px;
+    background: linear-gradient(135deg, #2f7bff, #6b5cff);
+    color: #fff; font-size: 14px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 3px 8px rgba(47,123,255,.35);
+  }
+  .step h3 { font-size: 14.5px; font-weight: 700; color: #16294a; margin: 8px 0 6px; }
+  .step p { font-size: 12px; color: #5c7590; line-height: 1.6; }
+  .step .kw { color: #2f7bff; font-weight: 600; }
+  .step-arrow {
+    align-self: center; color: #9db9dd; font-size: 18px; font-weight: 700; flex-shrink: 0;
+  }
+
+  /* ── tips bar ── */
+  .tips {
+    margin-top: 30px; border-radius: 16px; padding: 16px 20px;
+    background: linear-gradient(100deg, #16294a, #1d3c66);
+    color: #dce9fb; display: flex; gap: 14px; align-items: flex-start;
+  }
+  .tips .t-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+  .tips b { color: #8ed0ff; }
+  .tips p { font-size: 12.5px; line-height: 1.7; }
+
+  .footer {
+    margin-top: 22px; display: flex; justify-content: space-between; align-items: center;
+    font-size: 11.5px; color: #8aa2bd;
+  }
+  .footer .cmd {
+    font-family: Consolas, Menlo, monospace; font-size: 11.5px;
+    background: #e7effb; border: 1px solid #d3e2f5; color: #2f6bd8;
+    padding: 4px 10px; border-radius: 8px;
+  }
+</style>
+</head>
+<body>
+<div class="poster">
+  <div class="deco-grid"></div>
+  <div class="orb orb1"></div><div class="orb orb2"></div><div class="orb orb3"></div>
+
+  <div class="content">
+    <div class="badge-row">
+      <span class="badge b1">DSH Plugin</span>
+      <span class="badge b2">Open Source · MIT</span>
+      <span class="badge b3">One-click Revert</span>
+    </div>
+
+    <h1>Skill2CN <span class="en">Skill Localization</span></h1>
+    <div class="tagline">English skill descriptions <span class="arrow">⇢</span> Simplified Chinese — one click, revertible anytime, effective immediately</div>
+
+    <div class="section-title">CORE FEATURES</div>
+    <div class="features">
+      <div class="feature">
+        <div class="f-icon fi-1">🌐</div>
+        <div><h3>One-click Translate</h3><p>English descriptions become Simplified Chinese, written straight to disk and hot-reloaded — no DSH restart needed</p></div>
+      </div>
+      <div class="feature">
+        <div class="f-icon fi-2">↩️</div>
+        <div><h3>One-click Restore</h3><p>Originals are all backed up in the ledger; restore a single entry or hit "Restore All" — fully reversible</p></div>
+      </div>
+      <div class="feature">
+        <div class="f-icon fi-3">🔔</div>
+        <div><h3>New-skill Prompt</h3><p>When a new skill appears, a card pops up in the bottom-right asking whether to translate — never miss one</p></div>
+      </div>
+      <div class="feature">
+        <div class="f-icon fi-4">🧭</div>
+        <div><h3>Flexible Model Routing</h3><p>Follow session / configured model / custom API endpoint — pick one of three, with a Test button to verify instantly</p></div>
+      </div>
+    </div>
+
+    <div class="section-title">THREE STEPS</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>Open the Panel</h3>
+        <p>In DSH go to <span class="kw">Settings → Skill Localization</span>, and send one message in any session so the panel captures the model route</p>
+      </div>
+      <div class="step-arrow">›</div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>Pick &amp; Translate</h3>
+        <p>On the Untranslated tab click <span class="kw">Translate</span> on a card, or <span class="kw">Translate All</span> to batch-process (concurrency 3)</p>
+      </div>
+      <div class="step-arrow">›</div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>See the Result</h3>
+        <p>The Translated tab offers <span class="kw">View original</span>, single restore, or Restore All — translations take effect instantly</p>
+      </div>
+    </div>
+
+    <div class="tips">
+      <div class="t-icon">💡</div>
+      <p>
+        <b>Two key points:</b> only the description field is translated — the skill name and body stay
+        byte-for-byte intact, so there is zero breakage risk. And remember to click <b>Restore All</b> before
+        uninstalling — translations are not reverted automatically. Skills already in Chinese are marked
+        "no translation needed" and skipped.
+      </p>
+    </div>
+
+    <div class="footer">
+      <span class="cmd">dsh plugin --profile web add &lt;plugin path&gt;</span>
+      <span>Panel: Settings · Skill Localization · Untranslated / Translated / Model Settings</span>
+    </div>
+  </div>
+</div>
+</body>
+</html>

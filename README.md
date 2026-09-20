@@ -10,7 +10,7 @@ Translate the English `description` of DSH skills into Simplified Chinese, with 
 - **Single source of truth**: the `manifest.json` backup ledger. The panel reconciles "disk ↔ ledger" to derive each skill's state: untranslated / translated / no-translation-needed / stale
 
 <p align="center">
-  <img src="docs/assets/poster.png" alt="Skill2CN usage poster (Chinese)" width="640">
+  <img src="docs/assets/poster.en.png" alt="Skill2CN usage poster" width="640">
 </p>
 
 ## Features
@@ -27,9 +27,9 @@ Translate the English `description` of DSH skills into Simplified Chinese, with 
 
 ## Demo video
 
-<video src="https://github.com/kaluosifa/dsh-plugin-skill2cn/raw/main/docs/assets/introduction-video.mp4" controls muted playsinline width="720"></video>
+https://github.com/user-attachments/assets/a98d7649-052b-4912-8ff5-1a472abf2dda
 
-If the player does not load, [watch the video file directly](docs/assets/introduction-video.mp4). The intro video and the usage poster above ([source HTML](docs/assets/poster.html)) were made by our teammate 阿根 (Agen).
+The intro video and the usage poster above ([source HTML](docs/assets/poster.en.html)) were made by our teammate 阿根 (Agen). The video file is also kept in the repo at [`docs/assets/introduction-video.mp4`](docs/assets/introduction-video.mp4).
 
 ## Install
 
