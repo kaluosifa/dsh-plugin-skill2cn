@@ -2,6 +2,9 @@
 
 [English](README.md) | **简体中文**
 
+[![Listed on dsh-plugin.org](https://dsh-plugin.org/badges/listed.svg)](https://dsh-plugin.org/plugins/your-owner/your-plugin-slug)
+<!-- 插件被收录后，将上面链接中的 your-owner / your-plugin-slug 替换为详情页地址里对应的部分。 -->
+
 把 DSH skill 的英文 `description` 翻译成简体中文，可一键还原。
 
 - **唯一入口**：DSH 设置界面「技能汉化」分区页（3 个标签页：未翻译 / 已翻译 / 模型设置）；外加新增 skill 时的右下角提示浮层
@@ -21,14 +24,27 @@ https://github.com/user-attachments/assets/a98d7649-052b-4912-8ff5-1a472abf2dda
 
 ## 安装
 
+**从注册表安装**（待包名发布后可用——`dsh plugin add` 内部转发给 `pnpm add`，所以 `dsh-plugin-skill2cn` 必须能在 npm registry 上解析到）：
+
 ```bash
-dsh plugin --profile <profile> add <本仓库路径或 tarball>
+dsh plugin --profile web add dsh-plugin-skill2cn
 ```
 
-`link:` 安装（本地路径）不跑 `prepare`，无需 `allowBuilds`。安装后重启一次 DSH（首次加载 host 半身），此后：
+**从源码安装**（现在就能用；需要 Node ≥ 22.13 和 pnpm 11）：
+
+```bash
+git clone https://github.com/kaluosifa/dsh-plugin-skill2cn.git
+cd dsh-plugin-skill2cn
+pnpm install
+pnpm build   # 产出 lib/index.js + lib/client.js——插件入口（lib/ 已被 git 忽略）
+dsh plugin --profile web add .
+```
+
+`web` 换成你的 DSH profile 名。`link:` 安装（本地路径）不跑 `prepare`，无需 `allowBuilds`——但它也不会替你构建，所以要先 `pnpm build`。安装后重启一次 DSH（首次加载 host 半身），此后：
 
 - 改 **host**（`src/service.ts`、`src/core/**`）→ `pnpm build` 后重启 DSH
 - 改 **client**（`src/client/**`）→ `pnpm build` 后刷新浏览器
+- 源码升级 → `git pull && pnpm install && pnpm build`（host 半身有改动则重启 DSH）
 
 ## 卸载
 

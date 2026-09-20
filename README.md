@@ -2,6 +2,10 @@
 
 **English** | [简体中文](README.zh-CN.md)
 
+[![Listed on dsh-plugin.org](https://dsh-plugin.org/badges/listed.svg)](https://dsh-plugin.org/plugins/your-owner/your-plugin-slug)
+<!-- Once the plugin is listed on dsh-plugin.org, replace your-owner / your-plugin-slug
+     with the corresponding parts of the detail-page URL. -->
+
 Translate the English `description` of DSH skills into Simplified Chinese, with one-click restore.
 
 - **Single entry point**: a dedicated "技能汉化 / Skill Localization" section page in the DSH settings UI (3 tabs: Untranslated / Translated / Model Settings), plus a bottom-right prompt card when new skills appear
@@ -33,14 +37,27 @@ The intro video and the usage poster above ([source HTML](docs/assets/poster.en.
 
 ## Install
 
+**From the registry** (once the name is published — `dsh plugin add` forwards to `pnpm add`, so `dsh-plugin-skill2cn` must resolve on the npm registry):
+
 ```bash
-dsh plugin --profile <profile> add <path-to-this-repo-or-tarball>
+dsh plugin --profile web add dsh-plugin-skill2cn
 ```
 
-A `link:` install (local path) does not run `prepare`, so no `allowBuilds` entry is needed. Restart DSH once after installing (this loads the host half for the first time). After that:
+**From source** (works today; requires Node ≥ 22.13 and pnpm 11):
+
+```bash
+git clone https://github.com/kaluosifa/dsh-plugin-skill2cn.git
+cd dsh-plugin-skill2cn
+pnpm install
+pnpm build   # emits lib/index.js + lib/client.js — the plugin entry (lib/ is git-ignored)
+dsh plugin --profile web add .
+```
+
+Replace `web` with the name of your DSH profile. A `link:` install (local path) does not run `prepare`, so no `allowBuilds` entry is needed — but it also does not build the plugin for you, which is why `pnpm build` comes first. Restart DSH once after installing (this loads the host half for the first time). After that:
 
 - change the **host** (`src/service.ts`, `src/core/**`) → `pnpm build`, then restart DSH
 - change the **client** (`src/client/**`) → `pnpm build`, then reload the browser
+- upgrade from source → `git pull && pnpm install && pnpm build` (restart DSH if the host half changed)
 
 ## Uninstall
 

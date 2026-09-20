@@ -1,6 +1,6 @@
 {
   "name": "dsh-plugin-skill2cn",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Skill2CN · 技能汉化 — translate DSH skill descriptions to Simplified Chinese",
   "license": "MIT",
   "author": {
@@ -26,7 +26,6 @@
   ],
   "type": "module",
   "main": "./lib/index.js",
-  "types": "./lib/index.d.ts",
   "exports": {
     ".": "./lib/index.js",
     "./client": "./lib/client.js"
@@ -46,7 +45,8 @@
     "build": "tsc -p tsconfig.build.json && tsdown",
     "dev": "tsc -p tsconfig.build.json && tsdown --watch",
     "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.client.json --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "prepublishOnly": "pnpm build"
   },
   "peerDependencies": {
     "@deepseek-ai/cordis": "4.0.2"

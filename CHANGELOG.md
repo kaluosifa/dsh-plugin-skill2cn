@@ -7,8 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.1] — 2026-09-20
+
 ### Added
 
+- README install section: copy-paste CLI commands — `dsh plugin --profile web add
+  dsh-plugin-skill2cn` from the registry (works once the name resolves on npm:
+  `dsh plugin add` forwards to `pnpm add`), plus the clone-and-build source route
+  that works today (`lib/` is git-ignored, so a bare clone must be built before
+  `dsh plugin add`). Also the "Listed on dsh-plugin.org" badge, with placeholders
+  until the plugin detail page exists.
+- `package.json`: `prepublishOnly: pnpm build`, so `npm publish` / `pnpm publish`
+  always ships a freshly built `lib/`.
+
+### Fixed
+
+- `package.json`: dropped the dangling `types: ./lib/index.d.ts` pointer — the
+  bundles deliberately ship no `.d.ts` (`dts: false` in `tsdown.config.ts`), so
+  the published tarball never contained the file it pointed at.
 - README media (`docs/assets/`): the usage poster embedded near the top of both
   READMEs (English `poster.en.png` in `README.md`, Chinese `poster.png` in
   `README.zh-CN.md`; the `poster.en.html` / `poster.html` sources are kept for
@@ -140,5 +156,6 @@ See the "Known limitations" section of the [README](README.md). The most notable
 one: the "configured route" dropdown lists DSH's provider catalog, which is not the
 same as the set of providers with a registered adapter on the local machine.
 
-[Unreleased]: https://github.com/kaluosifa/dsh-plugin-skill2cn/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/kaluosifa/dsh-plugin-skill2cn/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/kaluosifa/dsh-plugin-skill2cn/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/kaluosifa/dsh-plugin-skill2cn/releases/tag/v0.1.0
