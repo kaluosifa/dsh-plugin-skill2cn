@@ -2,7 +2,7 @@ import { readFile, writeFile } from 'node:fs/promises'
 import { homedir } from 'node:os'
 import { join } from 'node:path'
 import type { Context } from '@deepseek-ai/cordis'
-import { Remote, RemoteError, TypertRemoteService } from '@deepseek-ai/dsh-typert-protocol'
+import { Remote, TypertRemoteService } from '@deepseek-ai/dsh-typert-protocol'
 import type { RemoteErrorCode } from '@deepseek-ai/dsh-typert-protocol'
 import { createUserMessage } from '@deepseek-ai/dsh-llm'
 import '@deepseek-ai/dsh-skill'
@@ -32,6 +32,23 @@ declare module '@deepseek-ai/dsh-typert-protocol' {
     'skill2cn/llm-http': {}
     'skill2cn/empty-translation': {}
     'skill2cn/internal': {}
+  }
+}
+
+// RemoteError 在 0.1.2-alpha 才进入 @deepseek-ai/dsh-typert-protocol；真实 profile 里
+// 可能是更老的 0.1.0-rc.x，具名 import 会在加载期直接 SyntaxError。协议约定宿主
+// Gateway 对失败只做结构识别（isDSHRemoteError + 字符串 code，从不 instanceof），
+// 所以这里定义一个形状一致的本地类，跨协议版本工作。
+class RemoteError extends Error {
+  readonly isDSHRemoteError = true as const
+
+  constructor(
+    readonly code: RemoteErrorCode,
+    message: string,
+    readonly details: Record<string, never>,
+  ) {
+    super(message)
+    this.name = 'RemoteError'
   }
 }
 

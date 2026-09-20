@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.2] — 2026-09-20
+
+### Fixed
+
+- **Registry installs failed to boot in real profiles** (the tarball/route worked
+  only from the dev `link:` install). Two distinct causes, both from resolving
+  `@deepseek-ai/dsh-typert-protocol` to a stale `0.1.0-rc.x` copy hoisted into the
+  profile by another plugin (`dsh-skill-mcp-panel`):
+  - load-time `SyntaxError`: `RemoteError` exists only in protocol ≥ 0.1.2-alpha.
+    The plugin now throws a local error class with the same wire shape — the host
+    Gateway discriminates structurally (`isDSHRemoteError` + string `code`, never
+    `instanceof`), so this works on every protocol generation;
+  - runtime `HTTP 404` on every panel API: rc.x records `@Remote` markers in a
+    module-private WeakMap that the Gateway's copy cannot see, while ≥ 0.1.2-alpha
+    attaches a versioned descriptor on the service prototype under a string key
+    (cross-copy readable by design). The plugin now declares
+    `@deepseek-ai/dsh-typert-protocol@0.1.2-alpha.3` as a runtime **dependency**,
+    so pnpm installs its own nested copy and the plugin never resolves whatever
+    stale copy another plugin hoisted into the profile.
+
 ## [0.1.1] — 2026-09-20
 
 ### Added
@@ -156,6 +176,7 @@ See the "Known limitations" section of the [README](README.md). The most notable
 one: the "configured route" dropdown lists DSH's provider catalog, which is not the
 same as the set of providers with a registered adapter on the local machine.
 
-[Unreleased]: https://github.com/kaluosifa/dsh-plugin-skill2cn/compare/v0.1.1...HEAD
+[Unreleased]: https://github.com/kaluosifa/dsh-plugin-skill2cn/compare/v0.1.2...HEAD
+[0.1.2]: https://github.com/kaluosifa/dsh-plugin-skill2cn/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/kaluosifa/dsh-plugin-skill2cn/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/kaluosifa/dsh-plugin-skill2cn/releases/tag/v0.1.0
