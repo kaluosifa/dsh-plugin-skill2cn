@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>Skill2CN 技能汉化 · 使用说明</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: "PingFang SC", "Microsoft YaHei", "Segoe UI", sans-serif;
+    background: #eef3fa;
+    display: flex; justify-content: center; padding: 24px;
+  }
+  .poster {
+    width: 760px;
+    background: linear-gradient(160deg, #f8fbff 0%, #eef4fd 55%, #e9f3ff 100%);
+    border-radius: 28px;
+    overflow: hidden;
+    box-shadow: 0 24px 60px rgba(30, 90, 180, 0.16);
+    position: relative;
+  }
+  /* ── 装饰背景 ── */
+  .deco-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(56,132,255,.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(56,132,255,.06) 1px, transparent 1px);
+    background-size: 36px 36px;
+    mask-image: radial-gradient(ellipse at 30% 0%, #000 0%, transparent 70%);
+  }
+  .orb { position: absolute; border-radius: 50%; filter: blur(2px); }
+  .orb1 { width: 220px; height: 220px; right: -70px; top: -70px;
+    background: radial-gradient(circle at 35% 35%, #7ee0ff33, #4f8cff22 60%, transparent 75%); }
+  .orb2 { width: 160px; height: 160px; left: -50px; top: 200px;
+    background: radial-gradient(circle at 40% 40%, #b39dff2e, transparent 70%); }
+  .orb3 { width: 260px; height: 260px; right: -80px; bottom: 120px;
+    background: radial-gradient(circle at 40% 40%, #6ff0d629, transparent 70%); }
+
+  .content { position: relative; padding: 44px 48px 40px; }
+
+  /* ── 头部 ── */
+  .badge-row { display: flex; gap: 10px; margin-bottom: 18px; }
+  .badge {
+    font-size: 12px; font-weight: 600; letter-spacing: .5px;
+    padding: 5px 14px; border-radius: 999px;
+  }
+  .b1 { background: #e3edff; color: #2563eb; border: 1px solid #bcd4ff; }
+  .b2 { background: #e8fbf4; color: #0d9463; border: 1px solid #bfeeda; }
+  .b3 { background: #f3ecff; color: #7c3aed; border: 1px solid #e2d4ff; }
+
+  h1 { font-size: 42px; font-weight: 800; color: #10233f; letter-spacing: 1px; line-height: 1.15; }
+  h1 .en {
+    background: linear-gradient(90deg, #2f7bff, #7c5cff);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .tagline {
+    margin-top: 12px; font-size: 17px; color: #47607f; font-weight: 500;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .tagline .arrow { color: #2f7bff; font-weight: 700; }
+
+  /* ── 功能卡片区 ── */
+  .section-title {
+    margin: 34px 0 14px; font-size: 14px; font-weight: 700; color: #7d94ad;
+    letter-spacing: 3px; display: flex; align-items: center; gap: 10px;
+  }
+  .section-title::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, #c8dcf5, transparent); }
+
+  .features { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .feature {
+    background: rgba(255,255,255,.82);
+    border: 1px solid #dde9f8; border-radius: 16px; padding: 16px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
+    backdrop-filter: blur(4px);
+    box-shadow: 0 4px 14px rgba(40, 100, 190, .06);
+  }
+  .f-icon {
+    width: 42px; height: 42px; border-radius: 12px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center; font-size: 21px;
+  }
+  .fi-1 { background: linear-gradient(135deg, #e2efff, #d0e2ff); }
+  .fi-2 { background: linear-gradient(135deg, #e5fbee, #d3f6e3); }
+  .fi-3 { background: linear-gradient(135deg, #f0e9ff, #e5d9ff); }
+  .fi-4 { background: linear-gradient(135deg, #fff2e0, #ffe4c2); }
+  .feature h3 { font-size: 15.5px; font-weight: 700; color: #16294a; margin-bottom: 3px; }
+  .feature p { font-size: 12.5px; color: #5c7590; line-height: 1.55; }
+
+  /* ── 三步流程 ── */
+  .steps { display: flex; gap: 12px; }
+  .step {
+    flex: 1; background: rgba(255,255,255,.82); border: 1px solid #dde9f8;
+    border-radius: 16px; padding: 16px 15px 14px; position: relative;
+    box-shadow: 0 4px 14px rgba(40, 100, 190, .06);
+  }
+  .step-num {
+    position: absolute; top: -12px; left: 15px;
+    width: 26px; height: 26px; border-radius: 8px;
+    background: linear-gradient(135deg, #2f7bff, #6b5cff);
+    color: #fff; font-size: 14px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 3px 8px rgba(47,123,255,.35);
+  }
+  .step h3 { font-size: 14.5px; font-weight: 700; color: #16294a; margin: 8px 0 6px; }
+  .step p { font-size: 12px; color: #5c7590; line-height: 1.6; }
+  .step .kw { color: #2f7bff; font-weight: 600; }
+  .step-arrow {
+    align-self: center; color: #9db9dd; font-size: 18px; font-weight: 700; flex-shrink: 0;
+  }
+
+  /* ── 提示条 ── */
+  .tips {
+    margin-top: 30px; border-radius: 16px; padding: 16px 20px;
+    background: linear-gradient(100deg, #16294a, #1d3c66);
+    color: #dce9fb; display: flex; gap: 14px; align-items: flex-start;
+  }
+  .tips .t-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+  .tips b { color: #8ed0ff; }
+  .tips p { font-size: 12.5px; line-height: 1.7; }
+
+  .footer {
+    margin-top: 22px; display: flex; justify-content: space-between; align-items: center;
+    font-size: 11.5px; color: #8aa2bd;
+  }
+  .footer .cmd {
+    font-family: Consolas, Menlo, monospace; font-size: 11.5px;
+    background: #e7effb; border: 1px solid #d3e2f5; color: #2f6bd8;
+    padding: 4px 10px; border-radius: 8px;
+  }
+</style>
+</head>
+<body>
+<div class="poster">
+  <div class="deco-grid"></div>
+  <div class="orb orb1"></div><div class="orb orb2"></div><div class="orb orb3"></div>
+
+  <div class="content">
+    <div class="badge-row">
+      <span class="badge b1">DSH 插件</span>
+      <span class="badge b2">开源 · MIT</span>
+      <span class="badge b3">一键可逆</span>
+    </div>
+
+    <h1>Skill2CN <span class="en">技能汉化</span></h1>
+    <div class="tagline">让英文技能描述 <span class="arrow">⇢</span> 一键变中文，随时还原，即改即生效</div>
+
+    <div class="section-title">核心功能</div>
+    <div class="features">
+      <div class="feature">
+        <div class="f-icon fi-1">🌐</div>
+        <div><h3>一键翻译</h3><p>英文描述译成简体中文，直接写入磁盘、热刷新生效，无需重启 DSH</p></div>
+      </div>
+      <div class="feature">
+        <div class="f-icon fi-2">↩️</div>
+        <div><h3>一键还原</h3><p>原文全部备份在清单中，支持单条还原或「全部还原」，进可攻退可守</p></div>
+      </div>
+      <div class="feature">
+        <div class="f-icon fi-3">🔔</div>
+        <div><h3>新技能提醒</h3><p>安装新技能时右下角自动弹卡片询问是否翻译，再也不会漏掉新装的技能</p></div>
+      </div>
+      <div class="feature">
+        <div class="f-icon fi-4">🧭</div>
+        <div><h3>模型自选路由</h3><p>跟随会话 / 已配置模型 / 自定义 API 端点，三选一，附「测试」按钮即时验证</p></div>
+      </div>
+    </div>
+
+    <div class="section-title">三步上手</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>打开面板</h3>
+        <p>DSH 界面点 <span class="kw">设置 → 技能汉化</span>，在任意会话先发一条消息，让面板捕获模型路由</p>
+      </div>
+      <div class="step-arrow">›</div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>选择翻译</h3>
+        <p>「未翻译」页挑一张卡片点 <span class="kw">翻译</span>，或点 <span class="kw">全部翻译</span> 批量处理（并发 3 个）</p>
+      </div>
+      <div class="step-arrow">›</div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>查看效果</h3>
+        <p>「已翻译」页可 <span class="kw">查看原文</span> 对照、单条还原或全部还原，翻译即时生效</p>
+      </div>
+    </div>
+
+    <div class="tips">
+      <div class="t-icon">💡</div>
+      <p>
+        <b>两个要点：</b>只翻译 description 一个字段，技能名与正文逐字节不动，改坏风险为零；
+        卸载插件前记得先点<b>「全部还原」</b>——译文不会随卸载自动复原。
+        中文描述的技能会被标记「无需翻译」，自动跳过。
+      </p>
+    </div>
+
+    <div class="footer">
+      <span class="cmd">dsh plugin --profile web add &lt;插件路径&gt;</span>
+      <span>面板入口：设置 · 技能汉化 · 未翻译 / 已翻译 / 模型设置</span>
+    </div>
+  </div>
+</div>
+</body>
+</html>

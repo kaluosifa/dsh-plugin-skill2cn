@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- README media (`docs/assets/`): the usage poster (rendered `poster.png`, with its
+  `poster.html` source kept for re-rendering) embedded near the top of both
+  READMEs, and the introduction video (`introduction-video.mp4`) in a new
+  "Demo video" / 「演示视频」 section. Video and poster by teammate 阿根 (Agen).
+
 ### Removed
 
 - The `demo-ws` skill fixture (`.dsh/skills/demo-ws/SKILL.md`). It existed only so the

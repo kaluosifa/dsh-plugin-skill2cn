@@ -9,6 +9,10 @@ Translate the English `description` of DSH skills into Simplified Chinese, with 
 - **Write-to-disk**: the translation is written straight back to the `SKILL.md` on disk (rationale in [`docs/adr/0001-write-to-disk-translation.md`](docs/adr/0001-write-to-disk-translation.md)); DSH hot-reloads it, so **no restart is needed**
 - **Single source of truth**: the `manifest.json` backup ledger. The panel reconciles "disk ↔ ledger" to derive each skill's state: untranslated / translated / no-translation-needed / stale
 
+<p align="center">
+  <img src="docs/assets/poster.png" alt="Skill2CN usage poster (Chinese)" width="640">
+</p>
+
 ## Features
 
 | Feature | What it does |
@@ -20,6 +24,12 @@ Translate the English `description` of DSH skills into Simplified Chinese, with 
 | Model Settings tab | Three translation routes — follow the current session route, pick a configured provider/model, or use a custom endpoint (OpenAI- or Anthropic-compatible protocol) — plus a `Test` button |
 | Upgrade reconcile | On panel open, entries overwritten by a package upgrade are either silently cleared or marked stale, and can be re-translated |
 | CJK heuristic | Descriptions that are already Chinese are marked "no translation needed" and skipped by batch runs |
+
+## Demo video
+
+<video src="https://github.com/kaluosifa/dsh-plugin-skill2cn/raw/main/docs/assets/introduction-video.mp4" controls muted playsinline width="720"></video>
+
+If the player does not load, [watch the video file directly](docs/assets/introduction-video.mp4). The intro video and the usage poster above ([source HTML](docs/assets/poster.html)) were made by our teammate 阿根 (Agen).
 
 ## Install
 

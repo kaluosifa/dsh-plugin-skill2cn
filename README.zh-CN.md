@@ -9,6 +9,16 @@
 - **写盘改写**：译文直接写入磁盘上的 `SKILL.md`（架构决策见 `docs/adr/0001-write-to-disk-translation.md`），改完由 DSH 热刷新自动生效，**无需重启**
 - **状态唯一事实源**：备份清单 `manifest.json`；面板按「磁盘 ↔ 清单」对账决定「未翻译 / 已翻译 / 无需翻译 / 已过期」
 
+<p align="center">
+  <img src="docs/assets/poster.png" alt="Skill2CN 使用说明海报" width="640">
+</p>
+
+## 演示视频
+
+<video src="https://github.com/kaluosifa/dsh-plugin-skill2cn/raw/main/docs/assets/introduction-video.mp4" controls muted playsinline width="720"></video>
+
+播放器未加载时可[直接查看视频文件](docs/assets/introduction-video.mp4)。介绍视频与上方使用说明海报（[源文件 HTML](docs/assets/poster.html)）由队友阿根制作。
+
 ## 安装
 
 ```bash
