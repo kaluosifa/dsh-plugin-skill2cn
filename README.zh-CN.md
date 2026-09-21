@@ -23,13 +23,13 @@ https://github.com/user-attachments/assets/a98d7649-052b-4912-8ff5-1a472abf2dda
 
 ## 安装
 
-**从注册表安装**（待包名发布后可用——`dsh plugin add` 内部转发给 `pnpm add`，所以 `dsh-plugin-skill2cn` 必须能在 npm registry 上解析到）：
+**从注册表安装**（需要 Node ≥ 22.13 和 pnpm 11）：
 
 ```bash
 dsh plugin --profile web add dsh-plugin-skill2cn
 ```
 
-**从源码安装**（现在就能用；需要 Node ≥ 22.13 和 pnpm 11）：
+**从源码安装**（需要 Node ≥ 22.13 和 pnpm 11）：
 
 ```bash
 git clone https://github.com/kaluosifa/dsh-plugin-skill2cn.git

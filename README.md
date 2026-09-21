@@ -35,13 +35,13 @@ The intro video and the usage poster above ([source HTML](docs/assets/poster.en.
 
 ## Install
 
-**From the registry** (once the name is published — `dsh plugin add` forwards to `pnpm add`, so `dsh-plugin-skill2cn` must resolve on the npm registry):
+**From the registry** (requires Node ≥ 22.13 and pnpm 11):
 
 ```bash
 dsh plugin --profile web add dsh-plugin-skill2cn
 ```
 
-**From source** (works today; requires Node ≥ 22.13 and pnpm 11):
+**From source** (requires Node ≥ 22.13 and pnpm 11):
 
 ```bash
 git clone https://github.com/kaluosifa/dsh-plugin-skill2cn.git

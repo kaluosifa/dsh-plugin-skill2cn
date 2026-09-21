@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- README badges updated from dsh-plugin.org to DSH Market (https://dsh.market/):
+  - English README: Listed badge (badge-listed-en.svg)
+  - Chinese README: 已收录 badge (badge-listed-zh.svg)
+- README install section updated: removed "once the name is published" condition since the package is now published on npm.
+
 ## [0.1.2] — 2026-09-20
 
 ### Fixed
