@@ -2,9 +2,7 @@
 
 **English** | [简体中文](README.zh-CN.md)
 
-[![Listed on dsh-plugin.org](https://dsh-plugin.org/badges/listed.svg)](https://dsh-plugin.org/plugins/your-owner/your-plugin-slug)
-<!-- Once the plugin is listed on dsh-plugin.org, replace your-owner / your-plugin-slug
-     with the corresponding parts of the detail-page URL. -->
+[![DSH Market](https://raw.githubusercontent.com/2BingLing/dsh-market/master/assets/readme/badge-listed-en.svg)](https://dsh.market/)
 
 Translate the English `description` of DSH skills into Simplified Chinese, with one-click restore.
 

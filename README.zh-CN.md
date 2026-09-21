@@ -2,8 +2,7 @@
 
 [English](README.md) | **简体中文**
 
-[![Listed on dsh-plugin.org](https://dsh-plugin.org/badges/listed.svg)](https://dsh-plugin.org/plugins/your-owner/your-plugin-slug)
-<!-- 插件被收录后，将上面链接中的 your-owner / your-plugin-slug 替换为详情页地址里对应的部分。 -->
+[![DSH Market](https://raw.githubusercontent.com/2BingLing/dsh-market/master/assets/readme/badge-listed-zh.svg)](https://dsh.market/)
 
 把 DSH skill 的英文 `description` 翻译成简体中文，可一键还原。
 
