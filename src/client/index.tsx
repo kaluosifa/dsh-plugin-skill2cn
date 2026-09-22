@@ -9,14 +9,14 @@ import { injectStyles } from './styles.ts'
 const NS = 'skill2cn'
 
 /** 挂载方只声明 `remote`；声明自己的命名空间会让插件等自己而永久停用（诊断修正 D11）。 */
-export const inject = ['slots', 'locale', 'remote', 'settingsScope']
+export const inject = ['slots', 'locale', 'remote']
 
 /**
  * 读 Remote 命名空间的 fiber 必须声明分段字面名：cordis 的 traceable 代理把
  * `ctx.remote.<ns>` 改写为 `Reflect.get(ctx, 'remote.<ns>')`，注入守卫按字面名匹配
  * （`<DSH>/docs/api-gateway.md` L58；先例 `ui-settings-models/src/client/index.ts` L65-68）。
  */
-const UI_INJECT = ['slots', 'locale', 'settingsScope', 'remote.skill2cn', 'remote.llm']
+const UI_INJECT = ['slots', 'locale', 'configForms', 'remote.skill2cn', 'remote.llm']
 
 function registerUi(ctx: ClientContext): void {
   const t = ctx.locale.bind(NS)

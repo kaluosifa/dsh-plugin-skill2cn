@@ -11,17 +11,21 @@ declare module '@deepseek-ai/cordis' {
       skill2cn: Skill2CnApi
       llm: LlmRemoteApi
     }
-    settingsScope: {
-      /** `bind` 返回的镜像视图：`getSnapshot()` 是同步状态包装，不是设置对象本身（诊断修正 D13） */
-      bind(options: { namespace: string }): {
+    /** 0.1.7 起的设置表单服务（`@deepseek-ai/dsh-client-ui-settings/client` 的 ConfigForms，已组合进 web-app bundle） */
+    configForms: {
+      get<T>(entryId: string): {
         getSnapshot(): {
           status: 'loading' | 'ready' | 'unavailable'
-          value?: unknown
+          value?: T
+          base?: Record<string, unknown>
           user?: Record<string, unknown>
+          revision?: number
           writable: boolean
+          mode: 'host' | 'memory'
         }
         subscribe(cb: () => void): () => void
-        set(field: string, value: unknown): Promise<unknown>
+        set(field: string, value: unknown): Promise<boolean>
+        unset(field: string): Promise<boolean>
       }
       describe(): unknown
     }

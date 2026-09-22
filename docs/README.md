@@ -15,6 +15,7 @@ Quick reference for the role of each document (ordered by authority level).
 | Document | Description |
 |---|---|
 | [ACCEPTANCE.md](ACCEPTANCE.md) | Implementation acceptance record: an itemized, measured result for each of the SPEC §7 acceptance criteria, the DSH API mismatches found during implementation, and the defects they exposed. |
+| [dsh-v0.1.7-migration.md](dsh-v0.1.7-migration.md) | Upstream migration notes: the four DSH breaking changes (0.1.6-alpha.2 / 0.1.7-alpha.1), their symptoms and fixes, the host↔plugin compatibility matrix, and the 0.2.0 verification checklist. |
 
 ## Repository-level documents (root)
 

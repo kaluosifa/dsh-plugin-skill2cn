@@ -17,21 +17,15 @@ interface SettingsValue {
 
 /**
  * 镜像视图：`getSnapshot()` 返回的是**同步状态包装**（`status`/`value`/`user`/`writable`），
- * 不是设置对象本身 —— 契约见 `@deepseek-ai/dsh-client-ui-settings/client` 的
- * `SettingsScopeSnapshot`（诊断修正 D13）。`value` 是 schema 解析后的有效值（用户层
- * 覆盖组合层再覆盖默认值）。
+ * 不是设置对象本身 —— 0.1.7 起契约见 `@deepseek-ai/dsh-client-ui-settings/client` 的
+ * `ConfigFormSnapshot`（`ctx.configForms.get(entryId)`）。`value` 是组合后的有效值
+ * （用户层覆盖组合层再覆盖默认值）。
  */
 interface ScopeSnapshot {
   status: 'loading' | 'ready' | 'unavailable'
   value?: SettingsValue
   user?: Record<string, unknown>
   writable: boolean
-}
-
-interface SettingsScopeLike {
-  getSnapshot(): ScopeSnapshot
-  subscribe(listener: () => void): () => void
-  set(field: string, value: unknown): Promise<unknown>
 }
 
 const DEFAULTS: Required<SettingsValue> = {
@@ -57,10 +51,7 @@ interface TestOutcome {
 }
 
 export function LlmSettings({ ctx, t }: { ctx: ClientContext; t: T }) {
-  const scope = useMemo(
-    () => ctx.settingsScope.bind({ namespace: 'skill2cn' }) as unknown as SettingsScopeLike,
-    [ctx],
-  )
+  const scope = useMemo(() => ctx.configForms.get<SettingsValue>('skill2cn'), [ctx])
   const [snapshot, setSnapshot] = useState<ScopeSnapshot>(() => scope.getSnapshot())
   const [providers, setProviders] = useState<readonly ConfigurableProvider[]>([])
   const [models, setModels] = useState<readonly DiscoveredModel[]>([])

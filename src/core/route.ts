@@ -10,7 +10,7 @@ export interface LlmRoute {
  */
 export type CustomProtocol = 'openai' | 'anthropic'
 
-/** 设置命名空间 skill2cn 的存储形状（host apply 注册的 schema 与此一一对应） */
+/** 路由设置形状（host `static Config` 的 volatile 字段经 `.get()` 与此一一对应） */
 export interface RouteSettings {
   readonly routeMode: string // 'follow' | 'preset' | 'custom'
   readonly provider: string

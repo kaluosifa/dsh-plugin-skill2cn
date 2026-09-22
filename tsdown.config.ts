@@ -10,7 +10,7 @@ const HOST_EXTERNALS = [
   '@deepseek-ai/dsh-settings',
   '@deepseek-ai/dsh-skill',
   '@deepseek-ai/dsh-typert-protocol',
-  'schemastery',
+  '@deepseek-ai/schemastery',
   'yaml',
 ]
 

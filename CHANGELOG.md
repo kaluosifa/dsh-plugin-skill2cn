@@ -14,6 +14,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Chinese README: 已收录 badge (badge-listed-zh.svg)
 - README install section updated: removed "once the name is published" condition since the package is now published on npm.
 
+## [0.2.0] — 2026-09-22
+
+### Changed
+
+- **Requires DSH ≥ 0.1.7-alpha.1** (breaking compatibility change — plugin ≤ 0.1.2
+  keeps working only on hosts ≤ 0.1.6-alpha.1; full host/plugin matrix and
+  per-break detail in [docs/dsh-v0.1.7-migration.md](../docs/dsh-v0.1.7-migration.md)).
+  Four upstream breaks migrated:
+  - strict Typert codecs now expose `create: () => schema` instead of the schema
+    itself (registry / loader / gateway call `codec.create().parse(...)` since
+    0.1.6-alpha.2);
+  - the settings system rewritten: client `settingsScope` → `ctx.configForms`,
+    host `settings.register/get` → `static Config` `.volatile()` fields plus
+    `SettingsForms.configure()`, values read live via `.get()`;
+  - plugin-kind message sources removed: one-shot user messages now pass through
+    as plain `RequestUserInput` (the `createUserMessage` wrapping is gone);
+  - `standingKeyFor()` → `acquireScope()` lease, released with
+    `[Symbol.asyncDispose]()` (tsconfig `lib` gains `ESNext.Disposable`).
+- Dependencies bumped to `0.1.7-alpha.1` (`dsh-typert-protocol`, `dsh-home-paths`,
+  `dsh-llm`, `dsh-session`, `dsh-settings`, `dsh-skill`); `schemastery` replaced by
+  the harness fork `@deepseek-ai/schemastery@3.18.3` (it ships `.volatile()`).
+
+### Added
+
+- `docs/dsh-v0.1.7-migration.md` — the four breaking points with version
+  boundaries, symptoms, fixes, the host compat matrix and the verification
+  checklist.
+- `tests/contribution.spec.ts` — regression guard: every strict codec of the
+  hand-written contribution exposes a `create()` factory.
+
 ## [0.1.2] — 2026-09-20
 
 ### Fixed
@@ -183,7 +213,8 @@ See the "Known limitations" section of the [README](README.md). The most notable
 one: the "configured route" dropdown lists DSH's provider catalog, which is not the
 same as the set of providers with a registered adapter on the local machine.
 
-[Unreleased]: https://github.com/kaluosifa/dsh-plugin-skill2cn/compare/v0.1.2...HEAD
+[Unreleased]: https://github.com/kaluosifa/dsh-plugin-skill2cn/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/kaluosifa/dsh-plugin-skill2cn/compare/v0.1.2...v0.2.0
 [0.1.2]: https://github.com/kaluosifa/dsh-plugin-skill2cn/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/kaluosifa/dsh-plugin-skill2cn/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/kaluosifa/dsh-plugin-skill2cn/releases/tag/v0.1.0

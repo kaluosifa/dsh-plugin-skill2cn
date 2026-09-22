@@ -5,7 +5,7 @@ import { batchSummary, pendingSkillView, progressView, skillEntryView, testRoute
 const PKG = 'dsh-plugin-skill2cn'
 
 const strict = (typeSymbol: string, schema: z.ZodType) =>
-  ({ mode: 'strict', typeSymbol, schema }) as const
+  ({ mode: 'strict', typeSymbol, create: () => schema }) as const
 
 const jsonParam = (name: string, schema: z.ZodType) =>
   ({ name, wire: name, source: 'json', codec: strict(`${PKG}#skill2cn:${name}`, schema) }) as const

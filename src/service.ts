@@ -4,7 +4,6 @@ import { join } from 'node:path'
 import type { Context } from '@deepseek-ai/cordis'
 import { Remote, TypertRemoteService } from '@deepseek-ai/dsh-typert-protocol'
 import type { RemoteErrorCode } from '@deepseek-ai/dsh-typert-protocol'
-import { createUserMessage } from '@deepseek-ai/dsh-llm'
 import '@deepseek-ai/dsh-skill'
 import { resolveDshHome } from '@deepseek-ai/dsh-home-paths'
 import { readDescription, rewriteDescription } from './core/frontmatter.ts'
@@ -52,15 +51,27 @@ class RemoteError extends Error {
   }
 }
 
-export interface Skill2CnConfig {
-  readonly dataDir: string
+/** 活引用（与 `@deepseek-ai/cosmokit` 的 `Volatile` 结构一致）：`.volatile()` 字段运行时的形状 */
+export interface Volatile<T> {
+  get(): T
 }
 
-const SETTINGS_NS = 'skill2cn'
+export interface Skill2CnConfig {
+  readonly dataDir: string
+  readonly routeMode: Volatile<string>
+  readonly provider: Volatile<string>
+  readonly model: Volatile<string>
+  readonly customBaseURL: Volatile<string>
+  readonly customApiKey: Volatile<string>
+  readonly customModel: Volatile<string>
+  readonly customProtocol: Volatile<string>
+}
 
 export class Skill2CnService extends TypertRemoteService {
-  static inject = ['skills', 'llm', 'settings', 'sessions', 'agentPresets']
+  static inject = ['skills', 'llm', 'sessions']
 
+  /** 完整配置（含 volatile 活引用）；readSettings 每次 `.get()` 读当前值 */
+  private readonly config: Skill2CnConfig
   private readonly store: ManifestStore
   /** 「已经问过用户」的 skill 名（提示节流，与翻译状态无关） */
   private readonly prompted: PromptedStore
@@ -85,6 +96,7 @@ export class Skill2CnService extends TypertRemoteService {
 
   constructor(ctx: Context, config: Skill2CnConfig) {
     super(ctx, 'skill2cn')
+    this.config = config
     this.store = new ManifestStore(join(config.dataDir, 'manifest.json'))
     this.prompted = new PromptedStore(join(config.dataDir, 'prompted.json'))
     this.dshHome = resolveDshHome()
@@ -158,16 +170,17 @@ export class Skill2CnService extends TypertRemoteService {
    * 诊断修正 D12：web 应用的 bundle 禁用了宿主机 `skill-filesystem` 行，本地发现
    * （项目根 + 用户根）由 agent preset 的 standing mount 拥有，因此宿主侧读取必须带
    * preset 的 standing scope key，否则只读到全局层（看不到 `~/.dsh/skills` 与项目 skill）。
-   * 契约见 `@deepseek-ai/dsh-agent-presets` 的 `standingKeyFor`（专为「无 agent 的宿主读取」而设）。
-   * 该服务缺失或组合不可用时不带 scope 继续（退化为全局层 + 插件包，不阻断面板）。
+   * 0.1.7 起契约为 `acquireScope()` 租约：`key` 即 scope key，standing mount 由租约期
+   * 持有，用完必须 `[Symbol.asyncDispose]()` 释放。服务缺失或获取失败时返回 undefined
+   * 继续（退化为全局层 + 插件包，不阻断面板；先例 session-controller 的 skill-catalog）。
    */
-  private async standingScope(): Promise<unknown> {
+  private async acquireStandingScope(): Promise<({ key: unknown } & AsyncDisposable) | undefined> {
     const presets = (this.ctx as unknown as {
-      agentPresets?: { standingKeyFor(id?: string): Promise<unknown> }
+      agentPresets?: { acquireScope(id?: string): Promise<{ key: unknown } & AsyncDisposable> }
     }).agentPresets
     if (presets === undefined) return undefined
     try {
-      return await presets.standingKeyFor()
+      return await presets.acquireScope()
     } catch {
       return undefined
     }
@@ -176,28 +189,33 @@ export class Skill2CnService extends TypertRemoteService {
   /** 列出全部卡片；每次调用先做升级对账（SPEC §3.4：面板打开时自动校验） */
   @Remote
   async list(): Promise<SkillEntryView[]> {
-    const cwd = this.activeCwd()
-    const scope = await this.standingScope()
-    const skills = await scanSkills(this.ctx.skills as unknown as SkillsRegistryLike, cwd, this.roots, scope)
-    const views: SkillEntryView[] = []
-    const seen = new Set<string>()
-    for (const skill of skills) {
-      seen.add(skill.path)
-      // 对账必须比对**磁盘**（SPEC §3.4「manifest 与磁盘文件一致性」）：registry 的描述
-      // 落后于 chokidar 失效，若拿它当判据，刚写盘的中文会被读成「文件已回退英文」而
-      // 误触发 clear-record 静默删记录。磁盘读不到时退回 registry 值。
-      const disk = await this.diskDescription(skill.path)
-      views.push(await this.viewOf(skill.path, skill.name, skill.group, disk ?? skill.description))
+    const lease = await this.acquireStandingScope()
+    try {
+      const cwd = this.activeCwd()
+      const scope = lease?.key
+      const skills = await scanSkills(this.ctx.skills as unknown as SkillsRegistryLike, cwd, this.roots, scope)
+      const views: SkillEntryView[] = []
+      const seen = new Set<string>()
+      for (const skill of skills) {
+        seen.add(skill.path)
+        // 对账必须比对**磁盘**（SPEC §3.4「manifest 与磁盘文件一致性」）：registry 的描述
+        // 落后于 chokidar 失效，若拿它当判据，刚写盘的中文会被读成「文件已回退英文」而
+        // 误触发 clear-record 静默删记录。磁盘读不到时退回 registry 值。
+        const disk = await this.diskDescription(skill.path)
+        views.push(await this.viewOf(skill.path, skill.name, skill.group, disk ?? skill.description))
+      }
+      // manifest 里有、磁盘枚举里消失的（skill 已卸载/文件缺失）→ stale/missing，仍可移除记录
+      for (const record of this.store.all()) {
+        if (seen.has(record.skillPath)) continue
+        views.push({
+          path: record.skillPath, name: record.name, description: record.translated,
+          group: record.group, state: 'stale', staleReason: 'missing', original: record.original,
+        })
+      }
+      return views
+    } finally {
+      await lease?.[Symbol.asyncDispose]()
     }
-    // manifest 里有、磁盘枚举里消失的（skill 已卸载/文件缺失）→ stale/missing，仍可移除记录
-    for (const record of this.store.all()) {
-      if (seen.has(record.skillPath)) continue
-      views.push({
-        path: record.skillPath, name: record.name, description: record.translated,
-        group: record.group, state: 'stale', staleReason: 'missing', original: record.original,
-      })
-    }
-    return views
   }
 
   /** 磁盘上的 description（对账真源）；文件缺失或不可解析 → undefined */
@@ -321,29 +339,34 @@ export class Skill2CnService extends TypertRemoteService {
   }
 
   private async recomputePending(): Promise<void> {
-    const cwd = this.activeCwd()
-    const scope = await this.standingScope()
-    const registry = this.ctx.skills as unknown as SkillsRegistryLike
-    const { skills, complete } = await readSummaries(registry, cwd, this.roots, scope)
-    if (!complete) return // 目录可能不全：保留上次结果，dirty 不清，下轮重试
+    const lease = await this.acquireStandingScope()
+    try {
+      const cwd = this.activeCwd()
+      const scope = lease?.key
+      const registry = this.ctx.skills as unknown as SkillsRegistryLike
+      const { skills, complete } = await readSummaries(registry, cwd, this.roots, scope)
+      if (!complete) return // 目录可能不全：保留上次结果，dirty 不清，下轮重试
 
-    const translated = new Set(this.store.all().map((entry) => entry.name))
-    const seen = new Set(this.prompted.names())
-    const newcomers = pendingNewcomers({ summaries: skills, seen, translated })
+      const translated = new Set(this.store.all().map((entry) => entry.name))
+      const seen = new Set(this.prompted.names())
+      const newcomers = pendingNewcomers({ summaries: skills, seen, translated })
 
-    const views: PendingSkillView[] = []
-    for (const skill of newcomers) {
-      const definition = await registry.get(skill.name, {
-        ...cwd === undefined ? {} : { cwd },
-        ...scope === undefined ? {} : { scope },
-      })
-      const path = definition?.path
-      if (typeof path !== 'string' || path.length === 0) continue
-      // 摘要没有路径，`group` 只是按 source 的临时归类；拿到路径后用路径重新归类
-      views.push({ name: skill.name, path, description: skill.description, group: classifyPath(path, this.roots, skill.source) })
+      const views: PendingSkillView[] = []
+      for (const skill of newcomers) {
+        const definition = await registry.get(skill.name, {
+          ...cwd === undefined ? {} : { cwd },
+          ...scope === undefined ? {} : { scope },
+        })
+        const path = definition?.path
+        if (typeof path !== 'string' || path.length === 0) continue
+        // 摘要没有路径，`group` 只是按 source 的临时归类；拿到路径后用路径重新归类
+        views.push({ name: skill.name, path, description: skill.description, group: classifyPath(path, this.roots, skill.source) })
+      }
+      this.pendingCache = views
+      this.catalogDirty = false
+    } finally {
+      await lease?.[Symbol.asyncDispose]()
     }
-    this.pendingCache = views
-    this.catalogDirty = false
   }
 
   /* ---------- 模型设置 ---------- */
@@ -369,8 +392,16 @@ export class Skill2CnService extends TypertRemoteService {
   /* ---------- 内部 ---------- */
 
   private readSettings(): RouteSettings {
-    const value = this.ctx.settings.get(SETTINGS_NS) as RouteSettings
-    return value
+    // 0.1.7：volatile 字段是活引用，每次 `.get()` 取当前值（写入经 configForms 走 profile patch 原地更新）
+    return {
+      routeMode: this.config.routeMode.get(),
+      provider: this.config.provider.get(),
+      model: this.config.model.get(),
+      customBaseURL: this.config.customBaseURL.get(),
+      customApiKey: this.config.customApiKey.get(),
+      customModel: this.config.customModel.get(),
+      customProtocol: this.config.customProtocol.get(),
+    }
   }
 
   private resolveRoute() {
@@ -384,8 +415,7 @@ export class Skill2CnService extends TypertRemoteService {
   private async translateText(route: ReturnType<Skill2CnService['resolveRoute']>, description: string): Promise<string> {
     try {
       if (route.kind === 'dsh') {
-        // 装配胶：真实 ctx.llm.stream 要求 `Message[]`，用 createUserMessage 构造
-        // （范式见 <DSH>/packages/session/session-title-llm/src/index.ts L247-250）
+      // 装配胶：0.1.7 起一次性用户消息是无身份的普通对象（RequestUserInput），直接透传
         return await translateWithDshLlm(this.dshLlm(), route, description)
       }
       return await translateWithCustomEndpoint(route, description)
@@ -400,17 +430,9 @@ export class Skill2CnService extends TypertRemoteService {
       stream(options: { messages: readonly unknown[] } & Record<string, unknown>): AsyncIterable<unknown>
     }
     return {
-      stream: (options) => llm.stream({
-        ...options,
-        messages: options.messages.map((message) => {
-          const raw = message as { role?: string; content?: readonly { type: string; text: string }[] }
-          if (raw.role !== 'user' || raw.content === undefined) return message
-          return createUserMessage({
-            content: raw.content.map((block) => ({ type: 'text' as const, text: block.text })),
-            source: { kind: 'plugin' as const, plugin: 'dsh-plugin-skill2cn' },
-          })
-        }),
-      }) as AsyncIterable<never>,
+      // translator 产出的已是 0.1.7 的普通 user 消息（RequestUserInput），原样透传；
+      // plugin source kind 已从 MessageSourceMap 移除，不能再包 createUserMessage
+      stream: (options) => llm.stream({ ...options }) as AsyncIterable<never>,
     } as DshLlmStream
   }
 
