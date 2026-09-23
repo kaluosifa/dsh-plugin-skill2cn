@@ -2,7 +2,7 @@
 
 [English](README.md) | **简体中文**
 
-[![DSH Market](https://raw.githubusercontent.com/2BingLing/dsh-market/master/assets/readme/badge-listed-zh.svg)](https://dsh.market/)
+[![DSH Market](https://raw.githubusercontent.com/2BingLing/dsh-market/master/assets/readme/badge-listed-zh.svg)](https://dsh.market/) [![Listed on dsh-plugin.org](https://dsh-plugin.org/badges/listed.svg)](https://dsh-plugin.org/plugins/kaluosifa/dsh-plugin-skill2cn)
 
 把 DSH skill 的英文 `description` 翻译成简体中文，可一键还原。
 
